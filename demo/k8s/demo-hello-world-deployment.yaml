@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-hello-world-deployment
+  labels:
+    app: demo-hello-world-pod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demo-hello-world-pod
+  template:
+    metadata:
+      labels:
+        app: demo-hello-world-pod
+    spec:
+      containers:
+      - name: demo-hello-world-pod
+        image: galihi5/demo-hello-world:1.0
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: demo-hello-world-service
+  name: demo-hello-world-service
+spec:
+  selector:
+    app: demo-hello-world-pod
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080

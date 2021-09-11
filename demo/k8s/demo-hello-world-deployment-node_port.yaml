@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-hello-world-deployment-local
+  labels:
+    app: demo-hello-world-pod-local
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demo-hello-world-pod-local
+  template:
+    metadata:
+      labels:
+        app: demo-hello-world-pod-local
+    spec:
+      containers:
+      - name: demo-hello-world-pod-local
+        image: demo-hello-world
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: demo-hello-world-service-local
+  name: demo-hello-world-service-local
+spec:
+  type: NodePort
+  selector:
+    app: demo-hello-world-pod-local
+  ports:
+  - name: http
+    port: 8080
+    nodePort: 30001
